@@ -90,11 +90,21 @@
     try{ localStorage.setItem('irisshare-toc::'+file, JSON.stringify(map)); }catch(e){}
   }
 
+  function fetchText(url, tries){
+    tries=tries||1;
+    return fetch(url).then(r=>{
+      if(!r.ok){
+        if(tries<2) return new Promise(res=>setTimeout(()=>res(fetchText(url, tries+1)), 600)); // 瞬时 CDN/缓存 404 自动重试一次
+        throw new Error(r.status);
+      }
+      return r.text();
+    });
+  }
+
   window.renderNote=function(file){
     const box=document.getElementById('noteBody');
     const tocEl=document.getElementById('toc');
-    fetch(file)
-      .then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); })
+    fetchText(file)
       .then(raw=>{
         const { fm, body }=parseFM(raw);
         const tmp=document.createElement('div');
@@ -187,6 +197,6 @@
         }
         document.title=(fm.title||'笔记')+' · IrisShare';
       })
-      .catch(err=>{ box.innerHTML='<p style="color:var(--em)">笔记加载失败：'+err.message+'</p>'; });
+      .catch(err=>{ box.innerHTML='<p style="color:var(--em);margin-bottom:10px">笔记加载失败：'+err.message+'</p><button id="noteRetry" style="border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:8px;padding:7px 16px;cursor:pointer">重试</button>'; const rb=document.getElementById('noteRetry'); if(rb) rb.onclick=()=>{ box.innerHTML='<p style="color:var(--text-soft)">加载中…</p>'; renderNote(file); }; });
   };
 })();
