@@ -195,7 +195,7 @@
           },{ rootMargin:'-80px 0px -70% 0px' });
           toc.forEach(t=>{ const el=document.getElementById(t.id); if(el) obs.observe(el); });
         }
-        document.title=(fm.title||'笔记')+' · IrisShare';
+        document.title='IrisShare · A lifelong learner · '+(fm.title||'笔记');
       })
       .catch(err=>{ box.innerHTML='<p style="color:var(--em);margin-bottom:10px">笔记加载失败：'+err.message+'</p><button id="noteRetry" style="border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:8px;padding:7px 16px;cursor:pointer">重试</button>'; const rb=document.getElementById('noteRetry'); if(rb) rb.onclick=()=>{ box.innerHTML='<p style="color:var(--text-soft)">加载中…</p>'; renderNote(file); }; });
   };
