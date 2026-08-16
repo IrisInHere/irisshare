@@ -1,7 +1,13 @@
 /* site.js — 深色切换 / 字号调节（持久化） / 导航高亮 */
 (function(){
   const root=document.documentElement;
-  function applyHljs(){
+  // 同步顶栏实际高度（手机端导航换行后更高），供吸顶工具栏定位
+  function syncHeaderH(){
+    const h=document.querySelector('.site-header');
+    if(h) root.style.setProperty('--header-h', h.offsetHeight+'px');
+  }
+  syncHeaderH();
+  window.addEventListener('resize', syncHeaderH);  function applyHljs(){
     const link=document.getElementById('hljs-theme');
     if(link) link.setAttribute('href', root.getAttribute('data-theme')==='dark'?'assets/css/hljs-dark.css':'assets/css/hljs-light.css');
   }
