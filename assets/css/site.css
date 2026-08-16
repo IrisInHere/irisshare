@@ -80,7 +80,8 @@ a:hover{text-decoration:underline;}
 
 /* Hero */
 .hero{padding-top:84px; padding-bottom:56px; text-align:center;}
-.hero h1{font-family:var(--serif); font-size:2.6rem; margin:.2em 0; color:var(--text);}
+.hero h1{font-family:var(--serif); font-size:2.6rem; margin:.2em 0; color:var(--text); line-height:1.28;}
+.hero-br{display:none;}
 .hero .lead{font-size:1.15rem; color:var(--text-soft); max-width:620px; margin:0 auto;}
 
 /* 模块卡片 */
@@ -181,7 +182,8 @@ body.toc-lock{overflow:hidden;}
 /* 响应式 */
 @media(max-width:860px){
   /* 目录抽屉在移动端沿用基础样式（.toc-drawer / #toc / .toc-fab 已统一），此处仅保留页面其余响应式 */
-  .hero h1{font-size:1.8rem; line-height:1.32;}
+  .hero h1{font-size:1.8rem; line-height:1.4;}
+  .hero-br{display:inline;}
   .hero{padding-top:48px; padding-bottom:32px;}
   .hero .eyebrow{letter-spacing:1.5px; font-size:.7rem; padding:0 4px;}
   .hero .lead{font-size:1rem; line-height:1.7; padding:0 4px;}
