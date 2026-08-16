@@ -58,7 +58,8 @@ a:hover{text-decoration:underline;}
   max-width:var(--maxw); margin:0 auto; padding:14px 22px;
   display:flex; align-items:center; justify-content:space-between; gap:16px;
 }
-.brand{font-family:var(--serif); font-weight:700; font-size:1.25rem; color:var(--primary); letter-spacing:.5px;}
+.brand{font-family:var(--serif); font-weight:700; font-size:1.25rem; color:var(--primary); letter-spacing:.5px; text-decoration:none;}
+.brand:hover, .brand:focus, .brand:active, .brand:visited{text-decoration:none;}
 .brand small{font-family:var(--sans); font-weight:400; font-size:.72rem; color:var(--text-soft); margin-left:8px; letter-spacing:1px;}
 .nav{display:flex; align-items:center; gap:22px;}
 .nav a{color:var(--text); font-size:.95rem; position:relative; padding:4px 0;}
