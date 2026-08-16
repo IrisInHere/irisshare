@@ -176,6 +176,7 @@ a:hover{text-decoration:underline;}
     border-left:0; border-top:0;
     padding:72px 16px 24px; margin:0;
     max-height:none; overflow:auto;
+    touch-action:pan-y;
     overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
     transform:translateX(-100%); transition:transform .25s ease;
     box-shadow:var(--shadow);

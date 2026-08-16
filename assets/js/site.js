@@ -54,7 +54,17 @@
     const backdrop=document.createElement('div');
     backdrop.className='toc-backdrop';
     document.body.appendChild(backdrop);
-    const closeDrawer=()=>{ if(toc){toc.classList.remove('toc-open');} backdrop.classList.remove('show'); document.body.classList.remove('toc-lock'); tocBtn.textContent='目录'; };
+    // 移动端背景滚动锁：仅允许目录抽屉内部滚动，其余滑动一律拦截
+    let isLocked=false;
+    function lockScroll(){ isLocked=true; document.body.classList.add('toc-lock'); }
+    function unlockScroll(){ isLocked=false; document.body.classList.remove('toc-lock'); }
+    function onTouchMove(e){
+      if(!isLocked) return;
+      if(toc && toc.contains(e.target)) return; // 目录内：允许原生滚动
+      e.preventDefault();                        // 背景：禁止滚动穿透
+    }
+    document.addEventListener('touchmove', onTouchMove, {passive:false});
+    const closeDrawer=()=>{ if(toc){toc.classList.remove('toc-open');} backdrop.classList.remove('show'); unlockScroll(); tocBtn.textContent='目录'; };
     backdrop.addEventListener('click',closeDrawer);
 
     function render(){
@@ -67,7 +77,7 @@
         if(reader) reader.classList.toggle('hide-toc',deskHide);
         if(toc) toc.classList.remove('toc-open');
         backdrop.classList.remove('show');
-        document.body.classList.remove('toc-lock');
+        unlockScroll();
         tocBtn.textContent=deskHide?'显示目录':'隐藏目录';
       }
     }
@@ -79,7 +89,7 @@
         const open=!(toc && toc.classList.contains('toc-open'));
         if(toc) toc.classList.toggle('toc-open',open);
         backdrop.classList.toggle('show',open);
-        document.body.classList.toggle('toc-lock',open);
+        open?lockScroll():unlockScroll();
         tocBtn.textContent=open?'收起目录':'目录';
       }else{
         deskHide=!deskHide;
