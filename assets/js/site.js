@@ -42,6 +42,23 @@
     inc.onclick=()=>apply(px+1);
     reset.onclick=()=>apply(DEF);
   }
+  // 工具栏（目录 + 字号）：默认收起，靠右侧 << 按钮展开
+  const toolbar=document.querySelector('.toolbar');
+  const fab=document.getElementById('toolbarFab');
+  if(toolbar && fab){
+    let open=localStorage.getItem('irisshare-toolbar')==='open';
+    function sync(){
+      toolbar.classList.toggle('collapsed', !open);
+      fab.textContent=open?'>>':'<<';
+      fab.setAttribute('aria-expanded', open?'true':'false');
+    }
+    sync();
+    fab.addEventListener('click',()=>{
+      open=!open;
+      sync();
+      try{ localStorage.setItem('irisshare-toolbar', open?'open':'collapsed'); }catch(e){}
+    });
+  }
   // 目录显示 / 隐藏（笔记页）
   const tocBtn=document.getElementById('tocToggle');
   if(tocBtn){

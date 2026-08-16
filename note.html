@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>笔记 · IrisShare</title>
 <script>try{const t=localStorage.getItem('irisshare-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
-<link rel="stylesheet" href="assets/css/site.css?v=20260816l">
+<link rel="stylesheet" href="assets/css/site.css?v=20260816m">
 <link rel="stylesheet" href="assets/css/iris-note.css">
 <link rel="stylesheet" href="assets/js/lib/katex/katex.min.css">
 <link id="hljs-theme" rel="stylesheet" href="assets/css/hljs-light.css">
@@ -21,7 +21,7 @@
   <div class="tools"><button class="icon-btn" id="themeToggle" title="切换深色 / 浅色">☾</button></div>
 </div></header>
 
-<div class="toolbar">
+<div class="toolbar collapsed">
   <div class="grp">
     <button id="tocToggle" title="显示 / 隐藏目录">隐藏目录</button>
     <button id="fontDec" title="缩小字号">A−</button>
@@ -29,6 +29,7 @@
     <button id="fontInc" title="放大字号">A+</button>
     <button id="fontReset" title="恢复默认">重置</button>
   </div>
+  <button class="toolbar-fab" id="toolbarFab" title="展开 / 收起工具栏" aria-expanded="false">&lt;&lt;</button>
 </div>
 
 <main class="reader">
@@ -46,8 +47,8 @@
 <script src="assets/js/lib/marked.umd.js"></script>
 <script src="assets/js/lib/katex/katex.min.js"></script>
 <script src="assets/js/lib/highlight.min.js"></script>
-<script src="assets/js/md-render.js?v=20260816l"></script>
-<script src="assets/js/site.js?v=20260816l"></script>
+<script src="assets/js/md-render.js?v=20260816m"></script>
+<script src="assets/js/site.js?v=20260816m"></script>
 <script>
   const params=new URLSearchParams(location.search);
   const file=params.get('file');
