@@ -2,7 +2,7 @@
 title: 用 AI + Power Query 把历史财务数据清洗提速 10 倍
 date: 2026-08-16
 category: IPO实务
-tags: [Power Query, DAX, 数据治理, AI提效, IPO]
+tags: [#Power Query, #DAX, #数据治理, #AI提效, #IPO]
 ---
 
 # 用 AI + Power Query 把历史财务数据清洗提速 10 倍

@@ -171,7 +171,13 @@ a:hover{text-decoration:underline;}
   #toc{position:static; max-height:none; border-left:0; border-top:1px solid var(--border); padding:14px 0 0; margin-bottom:18px; display:flex; flex-wrap:wrap; gap:6px 14px;}
   #toc .toc-title{width:100%;}
   #toc a{padding:0 !important;}
-  .nav{display:none;}
   .hero h1{font-size:2rem;}
   .hero{padding:56px 0 36px;}
+  /* 移动端顶栏：品牌 + 主题按钮一行，导航换行铺满第二行 */
+  .site-header .inner{flex-wrap:wrap; padding:10px 16px; gap:6px 12px;}
+  .brand{font-size:1.12rem;}
+  .tools{margin-left:auto;}
+  .nav{order:3; width:100%; gap:20px; font-size:.9rem; border-top:1px solid var(--border); padding-top:8px; margin-top:2px; justify-content:flex-start;}
+  .nav a{padding:4px 0;}
+  .nav a.active::after{bottom:0;}
 }
