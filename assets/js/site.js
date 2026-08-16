@@ -42,80 +42,33 @@
     inc.onclick=()=>apply(px+1);
     reset.onclick=()=>apply(DEF);
   }
-  // 工具栏（目录 + 字号）：默认收起，靠右侧 << 按钮展开
-  const toolbar=document.querySelector('.toolbar');
-  const fab=document.getElementById('toolbarFab');
-  if(toolbar && fab){
-    let open=localStorage.getItem('irisshare-toolbar')==='open';
-    function sync(){
-      toolbar.classList.toggle('collapsed', !open);
-      fab.textContent=open?'>>':'<<';
-      fab.setAttribute('aria-expanded', open?'true':'false');
-    }
-    sync();
-    fab.addEventListener('click',()=>{
-      open=!open;
-      sync();
-      try{ localStorage.setItem('irisshare-toolbar', open?'open':'collapsed'); }catch(e){}
-    });
-  }
-  // 目录显示 / 隐藏（笔记页）
-  const tocBtn=document.getElementById('tocToggle');
-  if(tocBtn){
-    const reader=document.querySelector('.reader');
-    const toc=document.getElementById('toc');
+  // 目录抽屉（含字号控件）：默认收起，左侧 << 把手滑出（<< 变 >>），再点收回
+  const drawer=document.getElementById('tocDrawer');
+  const tocFab=document.getElementById('tocFab');
+  if(drawer && tocFab){
     const mq=window.matchMedia('(max-width:860px)');
-    let deskHide=localStorage.getItem('irisshare-hide-toc')==='1';
-
-    // 移动端遮罩（点遮罩收起抽屉）
     const backdrop=document.createElement('div');
     backdrop.className='toc-backdrop';
     document.body.appendChild(backdrop);
-    // 移动端背景滚动锁：仅允许目录抽屉内部滚动，其余滑动一律拦截
+    // 移动端背景滚动锁：仅允许抽屉内部滚动，其余滑动一律拦截
     let isLocked=false;
     function lockScroll(){ isLocked=true; document.body.classList.add('toc-lock'); }
     function unlockScroll(){ isLocked=false; document.body.classList.remove('toc-lock'); }
     function onTouchMove(e){
       if(!isLocked) return;
-      if(toc && toc.contains(e.target)) return; // 目录内：允许原生滚动
-      e.preventDefault();                        // 背景：禁止滚动穿透
+      if(drawer.contains(e.target)) return; // 抽屉内：允许原生滚动
+      e.preventDefault();                   // 背景：禁止滚动穿透
     }
     document.addEventListener('touchmove', onTouchMove, {passive:false});
-    const closeDrawer=()=>{ if(toc){toc.classList.remove('toc-open');} backdrop.classList.remove('show'); unlockScroll(); tocBtn.textContent='目录'; };
+    function openDrawer(){ drawer.classList.add('toc-open'); backdrop.classList.add('show'); tocFab.textContent='>>'; tocFab.setAttribute('aria-expanded','true'); if(mq.matches) lockScroll(); }
+    function closeDrawer(){ drawer.classList.remove('toc-open'); backdrop.classList.remove('show'); tocFab.textContent='<<'; tocFab.setAttribute('aria-expanded','false'); unlockScroll(); }
+    function toggleDrawer(){ drawer.classList.contains('toc-open')?closeDrawer():openDrawer(); }
+    tocFab.addEventListener('click',toggleDrawer);
     backdrop.addEventListener('click',closeDrawer);
-
-    function render(){
-      if(mq.matches){
-        // 移动端：抽屉模式（默认收起，忽略桌面端的 hide-toc 偏好）
-        if(reader) reader.classList.remove('hide-toc');
-        tocBtn.textContent=toc.classList.contains('toc-open')?'收起目录':'目录';
-      }else{
-        // 桌面端：原隐藏 / 显示
-        if(reader) reader.classList.toggle('hide-toc',deskHide);
-        if(toc) toc.classList.remove('toc-open');
-        backdrop.classList.remove('show');
-        unlockScroll();
-        tocBtn.textContent=deskHide?'显示目录':'隐藏目录';
-      }
-    }
-    render();
-    if(mq.addEventListener) mq.addEventListener('change',render); else if(mq.addListener) mq.addListener(render);
-
-    tocBtn.addEventListener('click',()=>{
-      if(mq.matches){
-        const open=!(toc && toc.classList.contains('toc-open'));
-        if(toc) toc.classList.toggle('toc-open',open);
-        backdrop.classList.toggle('show',open);
-        open?lockScroll():unlockScroll();
-        tocBtn.textContent=open?'收起目录':'目录';
-      }else{
-        deskHide=!deskHide;
-        try{ localStorage.setItem('irisshare-hide-toc',deskHide?'1':'0'); }catch(e){}
-        render();
-      }
-    });
-
     // 移动端：点目录链接后自动收起抽屉
-    if(toc) toc.addEventListener('click',e=>{ if(mq.matches && e.target.closest('a.toc-link')) closeDrawer(); });
+    drawer.addEventListener('click',e=>{ if(mq.matches && e.target.closest('a.toc-link')) closeDrawer(); });
+    // 视口从移动切到桌面时解除锁定
+    const onMq=()=>{ if(!mq.matches) unlockScroll(); };
+    if(mq.addEventListener) mq.addEventListener('change',onMq); else if(mq.addListener) mq.addListener(onMq);
   }
 })();
