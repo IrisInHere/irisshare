@@ -1,0 +1,15 @@
+# Force LF line endings for all text files (avoids CRLF YAML/JSON parse issues)
+* text=auto eol=lf
+
+# Fonts shipped with KaTeX must stay binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+# Images
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.svg text
