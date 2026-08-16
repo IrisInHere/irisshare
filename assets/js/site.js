@@ -60,8 +60,8 @@
       e.preventDefault();                   // 背景：禁止滚动穿透
     }
     document.addEventListener('touchmove', onTouchMove, {passive:false});
-    function openDrawer(){ drawer.classList.add('toc-open'); backdrop.classList.add('show'); tocFab.textContent='>>'; tocFab.setAttribute('aria-expanded','true'); if(mq.matches) lockScroll(); }
-    function closeDrawer(){ drawer.classList.remove('toc-open'); backdrop.classList.remove('show'); tocFab.textContent='<<'; tocFab.setAttribute('aria-expanded','false'); unlockScroll(); }
+    function openDrawer(){ drawer.classList.add('toc-open'); backdrop.classList.add('show'); tocFab.setAttribute('aria-expanded','true'); if(mq.matches) lockScroll(); }
+    function closeDrawer(){ drawer.classList.remove('toc-open'); backdrop.classList.remove('show'); tocFab.setAttribute('aria-expanded','false'); unlockScroll(); }
     function toggleDrawer(){ drawer.classList.contains('toc-open')?closeDrawer():openDrawer(); }
     tocFab.addEventListener('click',toggleDrawer);
     backdrop.addEventListener('click',closeDrawer);

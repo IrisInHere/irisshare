@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>笔记 · IrisShare</title>
 <script>try{const t=localStorage.getItem('irisshare-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
-<link rel="stylesheet" href="assets/css/site.css?v=20260816n">
+<link rel="stylesheet" href="assets/css/site.css?v=20260816o">
 <link rel="stylesheet" href="assets/css/iris-note.css">
 <link rel="stylesheet" href="assets/js/lib/katex/katex.min.css">
 <link id="hljs-theme" rel="stylesheet" href="assets/css/hljs-light.css">
@@ -33,7 +33,12 @@
         <button id="fontReset" title="恢复默认">重置</button>
       </div>
     </div>
-    <button class="toc-fab" id="tocFab" aria-expanded="false" title="展开 / 收起目录">&lt;&lt;</button>
+    <button class="toc-fab" id="tocFab" aria-expanded="false" aria-label="展开 / 收起目录" title="展开 / 收起目录">
+      <svg class="toc-fab-ico" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 5 L15 12 L9 19"/>
+        <path d="M15 5 L21 12 L15 19"/>
+      </svg>
+    </button>
   </div>
   <div class="note-col">
     <div class="note-meta" id="noteMeta" style="display:none"></div>
@@ -48,8 +53,8 @@
 <script src="assets/js/lib/marked.umd.js"></script>
 <script src="assets/js/lib/katex/katex.min.js"></script>
 <script src="assets/js/lib/highlight.min.js"></script>
-<script src="assets/js/md-render.js?v=20260816n"></script>
-<script src="assets/js/site.js?v=20260816n"></script>
+<script src="assets/js/md-render.js?v=20260816o"></script>
+<script src="assets/js/site.js?v=20260816o"></script>
 <script>
   const params=new URLSearchParams(location.search);
   const file=params.get('file');
