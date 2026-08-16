@@ -201,3 +201,6 @@ body.toc-lock{overflow:hidden;}
   .nav a{padding:4px 0;}
   .nav a.active::after{bottom:0;}
 }
+
+/* 隐藏列表页标签筛选栏 */
+#tagBar{display:none;}
