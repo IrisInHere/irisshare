@@ -141,7 +141,7 @@
             link.addEventListener('click',e=>{
               e.preventDefault();
               const el=document.getElementById(n.id);
-              if(el) el.scrollIntoView({behavior:'smooth'});
+              if(el) el.scrollIntoView({behavior:'auto', block:'start'});
             });
             const defaultCollapsed=n.lv>=3;                       // 默认展开至 h3，h4 及以下默认收起
             const collapsed=(n.id in collapseMap)?!!collapseMap[n.id]:defaultCollapsed;

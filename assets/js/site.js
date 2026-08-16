@@ -54,7 +54,7 @@
     const backdrop=document.createElement('div');
     backdrop.className='toc-backdrop';
     document.body.appendChild(backdrop);
-    const closeDrawer=()=>{ if(toc){toc.classList.remove('toc-open');} backdrop.classList.remove('show'); tocBtn.textContent='目录'; };
+    const closeDrawer=()=>{ if(toc){toc.classList.remove('toc-open');} backdrop.classList.remove('show'); document.body.classList.remove('toc-lock'); tocBtn.textContent='目录'; };
     backdrop.addEventListener('click',closeDrawer);
 
     function render(){
@@ -67,6 +67,7 @@
         if(reader) reader.classList.toggle('hide-toc',deskHide);
         if(toc) toc.classList.remove('toc-open');
         backdrop.classList.remove('show');
+        document.body.classList.remove('toc-lock');
         tocBtn.textContent=deskHide?'显示目录':'隐藏目录';
       }
     }
@@ -78,6 +79,7 @@
         const open=!(toc && toc.classList.contains('toc-open'));
         if(toc) toc.classList.toggle('toc-open',open);
         backdrop.classList.toggle('show',open);
+        document.body.classList.toggle('toc-lock',open);
         tocBtn.textContent=open?'收起目录':'目录';
       }else{
         deskHide=!deskHide;
