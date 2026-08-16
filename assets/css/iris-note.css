@@ -1,0 +1,71 @@
+/* ===== 阅读笔记正文 · 复用 iris.css 调性（变量驱动，支持深色/字号） ===== */
+.note-content{
+  --nc-text:var(--text);
+  --nc-primary:var(--primary);
+  --nc-block:var(--surface-2);
+  --nc-mark-bg:var(--mark-bg);
+  --nc-mark-text:var(--mark-text);
+  --nc-em:var(--em);
+  --nc-border:var(--border-strong);
+  --nc-code-bg:var(--code-bg);
+  --nc-img-shadow:rgba(53,89,143,.12);
+  --nc-table-head:var(--primary);
+  --nc-table-head-text:#fff;
+  --nc-stripe:#fafcfe;
+  --nc-hover:var(--mark-bg);
+
+  max-width:860px; margin:0 auto;
+  font-family:var(--sans);
+  font-size:var(--content-font-size,18px);
+  line-height:1.8; color:var(--nc-text);
+  word-break:break-word; text-align:justify;
+}
+[data-theme="dark"] .note-content{
+  --nc-stripe:#1f2730;
+  --nc-img-shadow:rgba(0,0,0,.4);
+}
+.note-content h1,.note-content h2,.note-content h3,.note-content h4,.note-content h5,.note-content h6{
+  font-family:var(--serif); color:var(--nc-primary); line-height:1.35;
+}
+.note-content h1{font-size:1.9em; text-align:center; margin:0 0 1.4em; padding-top:.4em;}
+.note-content h2{
+  font-size:1.45em; display:inline-block; background:var(--nc-primary); color:#fff;
+  padding:4px 16px; border-radius:8px; margin:.6em 0;
+}
+.note-content h3{font-size:1.25em; margin:1.1em 0 .6em;}
+.note-content h4{font-size:1.1em; margin:.9em 0;}
+.note-content h5,.note-content h6{font-size:1em; margin:.7em 0;}
+.note-content p{margin:.7em 0;}
+.note-content strong{color:var(--nc-primary); font-weight:700;}
+.note-content em{color:var(--nc-em); font-style:normal;}
+.note-content a{color:var(--nc-primary); text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px;}
+.note-content mark{background:var(--nc-mark-bg); color:var(--nc-mark-text); font-weight:500; padding:2px 5px; border-radius:4px;}
+.note-content ul,.note-content ol{margin:.6em 0; padding-left:1.4em;}
+.note-content li{margin:.35em 0;}
+.note-content ul{list-style:disc;}
+.note-content ul ul{list-style:square;}
+.note-content ol{list-style:decimal;}
+.note-content blockquote{
+  border-left:3px solid var(--nc-primary); background:var(--nc-block);
+  padding:14px 20px; margin:1.2em 0; border-radius:0 8px 8px 0; color:var(--nc-text);
+}
+.note-content blockquote p{margin:.3em 0;}
+.note-content code{
+  font-family:var(--mono); font-size:.92em; color:var(--nc-primary);
+  background:var(--nc-code-bg); padding:2px 5px; border-radius:4px;
+}
+.note-content pre{background:var(--nc-code-bg); border:1px solid var(--nc-border); border-radius:10px; padding:14px 16px; overflow:auto;}
+.note-content pre code{background:transparent; padding:0; color:var(--nc-text); font-size:.9em;}
+.note-content img{max-width:100%; display:block; margin:1em auto; border-radius:8px; box-shadow:0 6px 18px var(--nc-img-shadow);}
+.note-content hr{border:0; border-top:2px solid var(--nc-block); margin:2em 0;}
+.note-content table{border-collapse:collapse; width:100%; margin:1.2em 0; font-size:.95em; border:1px solid var(--nc-border);}
+.note-content th,.note-content td{border:1px solid var(--nc-border); padding:9px 12px; text-align:justify; vertical-align:top;}
+.note-content thead th{
+  background:var(--nc-table-head); color:var(--nc-table-head-text); text-align:center; font-weight:700;
+  position:sticky; top:0; z-index:2;
+}
+.note-content tbody tr:nth-child(even){background:var(--nc-stripe);}
+.note-content tbody tr:hover{background:var(--nc-hover);}
+.note-content input[type=checkbox]{margin-right:6px;}
+.note-content .katex-display{ margin:1.5em 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
+.note-content .katex{ font-size:1.05em; }

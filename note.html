@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>笔记 · IrisShare</title>
+<script>try{const t=localStorage.getItem('irisshare-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/iris-note.css">
+<link rel="stylesheet" href="assets/js/lib/katex/katex.min.css">
+<link id="hljs-theme" rel="stylesheet" href="assets/css/hljs-light.css">
+</head>
+<body>
+<header class="site-header"><div class="inner">
+  <a class="brand" href="index.html">IrisShare<small>自洽·自爱·自由</small></a>
+  <nav class="nav">
+    <a href="index.html">首页</a>
+    <a href="notes.html">阅读笔记</a>
+    <a href="ai-finance.html">AI财务</a>
+  </nav>
+  <div class="tools"><button class="icon-btn" id="themeToggle" title="切换深色 / 浅色">☾</button></div>
+</div></header>
+
+<div class="toolbar">
+  <div class="grp">
+    <button id="tocToggle" title="显示 / 隐藏目录">隐藏目录</button>
+    <button id="fontDec" title="缩小字号">A−</button>
+    <span class="lbl" id="fontLabel">18px</span>
+    <button id="fontInc" title="放大字号">A+</button>
+    <button id="fontReset" title="恢复默认">重置</button>
+  </div>
+</div>
+
+<main class="reader">
+  <aside id="toc"></aside>
+  <div class="note-col">
+    <div class="note-meta" id="noteMeta" style="display:none"></div>
+    <article class="note-content" id="noteBody"><p style="color:var(--text-soft)">加载中…</p></article>
+  </div>
+</main>
+
+<footer class="site-footer"><div class="inner">
+  <span>© 2026 IrisShare</span>
+  <span>真实 · 清醒 · 克制 · 有温度</span>
+</div></footer>
+<script src="assets/js/lib/marked.umd.js"></script>
+<script src="assets/js/lib/katex/katex.min.js"></script>
+<script src="assets/js/lib/highlight.min.js"></script>
+<script src="assets/js/md-render.js"></script>
+<script src="assets/js/site.js"></script>
+<script>
+  const params=new URLSearchParams(location.search);
+  const file=params.get('file');
+  if(file && window.renderNote) renderNote(file);
+  else document.getElementById('noteBody').innerHTML='<p style="color:var(--em)">未指定笔记文件。</p>';
+</script>
+</body></html>
