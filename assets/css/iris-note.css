@@ -14,7 +14,7 @@
   --nc-stripe:#fafcfe;
   --nc-hover:var(--mark-bg);
 
-  max-width:860px; margin:0 auto; min-width:0;
+  max-width:860px; width:100%; margin:0 auto; min-width:0; box-sizing:border-box;
   font-family:var(--sans);
   font-size:var(--content-font-size,18px);
   line-height:1.8; color:var(--nc-text);
