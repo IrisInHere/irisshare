@@ -40,16 +40,47 @@
   const tocBtn=document.getElementById('tocToggle');
   if(tocBtn){
     const reader=document.querySelector('.reader');
-    let hide=localStorage.getItem('irisshare-hide-toc')==='1';
-    function applyToc(){
-      if(reader) reader.classList.toggle('hide-toc',hide);
-      tocBtn.textContent=hide?'显示目录':'隐藏目录';
+    const toc=document.getElementById('toc');
+    const mq=window.matchMedia('(max-width:860px)');
+    let deskHide=localStorage.getItem('irisshare-hide-toc')==='1';
+
+    // 移动端遮罩（点遮罩收起抽屉）
+    const backdrop=document.createElement('div');
+    backdrop.className='toc-backdrop';
+    document.body.appendChild(backdrop);
+    const closeDrawer=()=>{ if(toc){toc.classList.remove('toc-open');} backdrop.classList.remove('show'); tocBtn.textContent='目录'; };
+    backdrop.addEventListener('click',closeDrawer);
+
+    function render(){
+      if(mq.matches){
+        // 移动端：抽屉模式（默认收起，忽略桌面端的 hide-toc 偏好）
+        if(reader) reader.classList.remove('hide-toc');
+        tocBtn.textContent=toc.classList.contains('toc-open')?'收起目录':'目录';
+      }else{
+        // 桌面端：原隐藏 / 显示
+        if(reader) reader.classList.toggle('hide-toc',deskHide);
+        if(toc) toc.classList.remove('toc-open');
+        backdrop.classList.remove('show');
+        tocBtn.textContent=deskHide?'显示目录':'隐藏目录';
+      }
     }
-    applyToc();
-    tocBtn.onclick=()=>{
-      hide=!hide;
-      try{ localStorage.setItem('irisshare-hide-toc',hide?'1':'0'); }catch(e){}
-      applyToc();
-    };
+    render();
+    if(mq.addEventListener) mq.addEventListener('change',render); else if(mq.addListener) mq.addListener(render);
+
+    tocBtn.addEventListener('click',()=>{
+      if(mq.matches){
+        const open=!(toc && toc.classList.contains('toc-open'));
+        if(toc) toc.classList.toggle('toc-open',open);
+        backdrop.classList.toggle('show',open);
+        tocBtn.textContent=open?'收起目录':'目录';
+      }else{
+        deskHide=!deskHide;
+        try{ localStorage.setItem('irisshare-hide-toc',deskHide?'1':'0'); }catch(e){}
+        render();
+      }
+    });
+
+    // 移动端：点目录链接后自动收起抽屉
+    if(toc) toc.addEventListener('click',e=>{ if(mq.matches && e.target.closest('a.toc-link')) closeDrawer(); });
   }
 })();
