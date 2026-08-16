@@ -14,12 +14,14 @@
   --nc-stripe:#fafcfe;
   --nc-hover:var(--mark-bg);
 
-  max-width:860px; margin:0 auto;
+  max-width:860px; margin:0 auto; min-width:0;
   font-family:var(--sans);
   font-size:var(--content-font-size,18px);
   line-height:1.8; color:var(--nc-text);
-  word-break:break-word; text-align:justify;
+  word-break:break-word; overflow-wrap:anywhere; text-align:justify;
 }
+/* 宽表格在窄屏内横向滚动，不再撑破页面布局 */
+.table-wrap{width:100%; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; margin:1.2em 0;}
 [data-theme="dark"] .note-content{
   --nc-stripe:#1f2730;
   --nc-img-shadow:rgba(0,0,0,.4);
@@ -54,7 +56,7 @@
   font-family:var(--mono); font-size:.92em; color:var(--nc-primary);
   background:var(--nc-code-bg); padding:2px 5px; border-radius:4px;
 }
-.note-content pre{background:var(--nc-code-bg); border:1px solid var(--nc-border); border-radius:10px; padding:14px 16px; overflow:auto;}
+.note-content pre{background:var(--nc-code-bg); border:1px solid var(--nc-border); border-radius:10px; padding:14px 16px; overflow:auto; max-width:100%;}
 .note-content pre code{background:transparent; padding:0; color:var(--nc-text); font-size:.9em;}
 .note-content img{max-width:100%; display:block; margin:1em auto; border-radius:8px; box-shadow:0 6px 18px var(--nc-img-shadow);}
 .note-content hr{border:0; border-top:2px solid var(--nc-block); margin:2em 0;}
@@ -69,3 +71,15 @@
 .note-content input[type=checkbox]{margin-right:6px;}
 .note-content .katex-display{ margin:1.5em 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
 .note-content .katex{ font-size:1.05em; }
+
+/* 手机端：正文排版自适应窄屏 */
+@media (max-width:860px){
+  .note-content{ font-size:var(--content-font-size,17px); line-height:1.75; }
+  .note-content h1{ font-size:1.55em; margin-bottom:1em; }
+  .note-content h2{ font-size:1.28em; padding:4px 13px; }
+  .note-content h3{ font-size:1.15em; }
+  .note-content blockquote{ padding:12px 16px; }
+  .note-content pre{ padding:12px 14px; font-size:.85em; }
+  .note-content th,.note-content td{ padding:8px 10px; }
+  .note-content img{ margin:0.8em auto; }
+}

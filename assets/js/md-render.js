@@ -120,6 +120,15 @@
           h.style.scrollMarginTop='80px';
           toc.push({ lv:+h.tagName[1], id:h.id, text:txt });
         });
+
+        // 给每个表格套一个横向滚动容器，避免宽表格在窄屏撑破页面布局（保留表格布局与 sticky 表头）
+        tmp.querySelectorAll('table').forEach(t=>{
+          const w=document.createElement('div');
+          w.className='table-wrap';
+          t.parentNode.insertBefore(w, t);
+          w.appendChild(t);
+        });
+
         box.innerHTML=tmp.innerHTML;
 
         const metaEl=document.getElementById('noteMeta');
