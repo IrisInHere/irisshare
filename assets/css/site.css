@@ -144,8 +144,8 @@ a:hover{text-decoration:underline;}
 #toc .toc-title{flex:0 0 auto; padding:72px 16px 12px; margin:0; font-size:.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--text-soft);}
 #toc .toc-tree{flex:1 1 0; min-height:0; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; touch-action:pan-y; padding:0 16px 16px;}
 #toc .toc-node{position:relative;}
-#toc .toc-row{display:flex; align-items:flex-start; gap:2px;}
-#toc .toc-toggle{appearance:none; border:0; background:transparent; cursor:pointer; color:var(--text-soft); font-size:.7rem; line-height:1.7; width:16px; flex:0 0 16px; padding:0; transition:color .15s;}
+#toc .toc-row{display:flex; align-items:flex-start; gap:2px; position:relative; padding-left:18px;}
+#toc .toc-toggle{appearance:none; border:0; background:transparent; cursor:pointer; color:var(--text-soft); font-size:.7rem; line-height:1.7; width:16px; flex:0 0 auto; padding:0; transition:color .15s; position:absolute; left:0; top:0;}
 #toc .toc-toggle:hover{color:var(--primary);}
 #toc .toc-link{display:block; color:var(--text-soft); padding:3px 0; line-height:1.5; text-decoration:none; flex:1;}
 #toc .toc-link:hover{color:var(--primary);}
