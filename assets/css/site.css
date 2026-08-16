@@ -157,10 +157,10 @@ a:hover{text-decoration:underline;}
 .toc-tools .grp button:hover{background:var(--surface-2); color:var(--primary);}
 .toc-tools .lbl{font-size:.8rem; color:var(--text-soft); min-width:40px; text-align:center;}
 /* 抽屉把手：贴在抽屉右边缘的竖向拉手标签，内嵌可旋转双箭头（折叠朝右=展开 / 展开旋转180°朝左=收回） */
-.toc-fab{position:absolute; top:calc(var(--header-h,57px) + 14px); left:100%; z-index:61; width:30px; height:58px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--border); border-left:0; border-radius:0 14px 14px 0; background:color-mix(in srgb,var(--surface) 82%,transparent); backdrop-filter:saturate(150%) blur(10px); -webkit-backdrop-filter:saturate(150%) blur(10px); color:var(--text-soft); cursor:pointer; padding:0; box-shadow:6px 0 18px rgba(53,89,143,.10); transition:color .2s, background .2s, box-shadow .2s, width .15s;}
-.toc-fab:hover{color:var(--primary); background:color-mix(in srgb,var(--surface) 94%,transparent); box-shadow:6px 0 22px rgba(53,89,143,.18);}
-.toc-fab:active{width:26px;}
-.toc-fab-ico{display:block; transition:transform .3s cubic-bezier(.4,0,.2,1);}
+.toc-fab{position:absolute; top:calc(var(--header-h,57px) + 14px); left:100%; z-index:61; width:22px; height:44px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--border); border-left:0; border-radius:0 10px 10px 0; background:color-mix(in srgb,var(--surface) 82%,transparent); backdrop-filter:saturate(150%) blur(10px); -webkit-backdrop-filter:saturate(150%) blur(10px); color:var(--text-soft); cursor:pointer; padding:0; box-shadow:5px 0 16px rgba(53,89,143,.10); transition:color .2s, background .2s, box-shadow .2s, width .15s;}
+.toc-fab:hover{color:var(--primary); background:color-mix(in srgb,var(--surface) 94%,transparent); box-shadow:5px 0 20px rgba(53,89,143,.18);}
+.toc-fab:active{width:18px;}
+.toc-fab-ico{display:block; width:14px; height:14px; transition:transform .3s cubic-bezier(.4,0,.2,1);}
 .toc-fab:focus-visible{outline:2px solid var(--primary); outline-offset:2px;}
 .toc-drawer.toc-open .toc-fab-ico{transform:rotate(180deg);}
 .toc-backdrop{position:fixed; inset:0; z-index:55; background:rgba(0,0,0,.38); opacity:0; visibility:hidden; transition:opacity .25s, visibility .25s;}
