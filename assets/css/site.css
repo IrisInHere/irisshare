@@ -75,11 +75,11 @@ a:hover{text-decoration:underline;}
 
 /* 容器 */
 .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px;}
-.section{padding:56px 0;}
+.section{padding-top:56px; padding-bottom:56px;}
 .eyebrow{font-size:.75rem; letter-spacing:3px; text-transform:uppercase; color:var(--primary); font-weight:600;}
 
 /* Hero */
-.hero{padding:84px 0 56px; text-align:center;}
+.hero{padding-top:84px; padding-bottom:56px; text-align:center;}
 .hero h1{font-family:var(--serif); font-size:2.6rem; margin:.2em 0; color:var(--text);}
 .hero .lead{font-size:1.15rem; color:var(--text-soft); max-width:620px; margin:0 auto;}
 
@@ -97,7 +97,7 @@ a:hover{text-decoration:underline;}
 .card .go{margin-top:auto; font-size:.9rem; color:var(--primary); font-weight:600;}
 
 /* 笔记列表 */
-.page-head{padding:48px 0 8px;}
+.page-head{padding-top:48px; padding-bottom:8px;}
 .page-head h1{font-family:var(--serif); font-size:2.1rem; margin:.1em 0; color:var(--text);}
 .controls{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:22px 0 8px;}
 .search{flex:1 1 100%; max-width:440px; display:flex; align-items:center; gap:10px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:9px 14px; transition:border-color .2s, box-shadow .2s;}
@@ -181,10 +181,13 @@ body.toc-lock{overflow:hidden;}
 /* 响应式 */
 @media(max-width:860px){
   /* 目录抽屉在移动端沿用基础样式（.toc-drawer / #toc / .toc-fab 已统一），此处仅保留页面其余响应式 */
-  .hero h1{font-size:2rem;}
-  .hero{padding:56px 0 36px;}
+  .hero h1{font-size:1.8rem; line-height:1.32;}
+  .hero{padding-top:48px; padding-bottom:32px;}
+  .hero .eyebrow{letter-spacing:1.5px; font-size:.7rem; padding:0 4px;}
+  .hero .lead{font-size:1rem; line-height:1.7; padding:0 4px;}
+  .cards{margin-top:28px; gap:16px;}
   /* 移动端顶栏：品牌 + 主题按钮一行，导航换行铺满第二行 */
-  .site-header .inner{flex-wrap:wrap; padding:10px 16px; gap:6px 12px;}
+  .site-header .inner{flex-wrap:wrap; padding:10px 22px; gap:6px 12px;}
   .brand{font-size:1.12rem;}
   .tools{margin-left:auto;}
   .nav{order:3; width:100%; gap:20px; font-size:.9rem; border-top:1px solid var(--border); padding-top:8px; margin-top:2px; justify-content:flex-start;}
