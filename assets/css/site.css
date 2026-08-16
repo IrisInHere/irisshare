@@ -131,9 +131,10 @@ a:hover{text-decoration:underline;}
 
 /* 笔记详情布局 */
 .reader{display:grid; grid-template-columns:240px minmax(0,1fr); gap:40px; max-width:1200px; margin:0 auto; padding:30px 22px 80px;}
-#toc{position:sticky; top:calc(var(--header-h,57px) + 49px); align-self:start; max-height:calc(100vh - var(--header-h,57px) - 70px); overflow:auto; font-size:.9rem; border-left:2px solid var(--border); padding-left:16px;}
+#toc{position:sticky; top:calc(var(--header-h,57px) + 49px); align-self:start; font-size:.9rem; border-left:2px solid var(--border); padding-left:16px;}
 #toc .toc-title{font-size:.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--text-soft); margin-bottom:10px;}
-#toc .toc-tree{margin-top:2px;}
+/* 桌面端：滚动容器下沉到内层 .toc-tree（不依赖 --header-h 的 max-height，避免变量异常导致塌缩无法滚动） */
+#toc .toc-tree{margin-top:2px; max-height:calc(100vh - 150px); overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;}
 #toc .toc-node{position:relative;}
 #toc .toc-row{display:flex; align-items:flex-start; gap:2px;}
 #toc .toc-toggle{appearance:none; border:0; background:transparent; cursor:pointer; color:var(--text-soft); font-size:.7rem; line-height:1.7; width:16px; flex:0 0 16px; padding:0; transition:color .15s;}
@@ -186,7 +187,7 @@ a:hover{text-decoration:underline;}
   body.toc-lock{overflow:hidden;}
   /* 抽屉外壳不滚动；真正滚动的是内层 .toc-tree（固定高度的弹性区域，移动端可靠滚动，规避 iOS fixed+overflow 不滚动的坑） */
   #toc .toc-title{flex:0 0 auto; padding:72px 16px 12px; margin:0;}
-  #toc .toc-tree{flex:1 1 auto; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:pan-y; padding:0 16px 24px;}
+  #toc .toc-tree{flex:1 1 auto; max-height:none; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:pan-y; padding:0 16px 24px;}
   .hero h1{font-size:2rem;}
   .hero{padding:56px 0 36px;}
   /* 移动端顶栏：品牌 + 主题按钮一行，导航换行铺满第二行 */
