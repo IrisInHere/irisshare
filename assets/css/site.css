@@ -172,12 +172,11 @@ a:hover{text-decoration:underline;}
   #toc{
     position:fixed; top:0; left:0; bottom:0; z-index:60;
     width:min(82vw,320px);
+    display:flex; flex-direction:column;
     background:var(--surface); border-right:1px solid var(--border);
     border-left:0; border-top:0;
-    padding:72px 16px 24px; margin:0;
-    max-height:none; overflow:auto;
-    touch-action:pan-y;
-    overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
+    padding:0; margin:0;
+    overflow:hidden;
     transform:translateX(-100%); transition:transform .25s ease;
     box-shadow:var(--shadow);
   }
@@ -185,7 +184,9 @@ a:hover{text-decoration:underline;}
   .toc-backdrop{position:fixed; inset:0; z-index:55; background:rgba(0,0,0,.38); opacity:0; visibility:hidden; transition:opacity .25s, visibility .25s;}
   .toc-backdrop.show{opacity:1; visibility:visible;}
   body.toc-lock{overflow:hidden;}
-  #toc .toc-title{width:auto; margin-bottom:12px;}
+  /* 抽屉外壳不滚动；真正滚动的是内层 .toc-tree（固定高度的弹性区域，移动端可靠滚动，规避 iOS fixed+overflow 不滚动的坑） */
+  #toc .toc-title{flex:0 0 auto; padding:72px 16px 12px; margin:0;}
+  #toc .toc-tree{flex:1 1 auto; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; touch-action:pan-y; padding:0 16px 24px;}
   .hero h1{font-size:2rem;}
   .hero{padding:56px 0 36px;}
   /* 移动端顶栏：品牌 + 主题按钮一行，导航换行铺满第二行 */
