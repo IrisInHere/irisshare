@@ -90,8 +90,10 @@ a:hover{text-decoration:underline;}
 .card{
   background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
   padding:26px 24px; transition:.22s; display:flex; flex-direction:column; gap:10px;
+  text-decoration:none;
 }
-.card:hover{transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--border-strong);}
+.card:hover, .card:focus, .card:active, .card:visited{text-decoration:none;}
+.card *{text-decoration:none;}
 .card h3{margin:0; font-family:var(--serif); font-size:1.3rem; color:var(--primary);}
 .card p{margin:0; color:var(--text-soft); font-size:.95rem;}
 .card .badge{font-size:.7rem; padding:2px 9px; border-radius:999px; background:var(--surface-2); color:var(--text-soft); align-self:flex-start;}
