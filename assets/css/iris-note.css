@@ -63,7 +63,7 @@
 .note-content img{max-width:100%; display:block; margin:1em auto; border-radius:8px; box-shadow:0 6px 18px var(--nc-img-shadow);}
 .note-content hr{border:0; border-top:2px solid var(--nc-block); margin:2em 0;}
 .note-content table{border-collapse:collapse; width:auto; min-width:100%; margin:1.2em 0; font-size:.95em; border:1px solid var(--nc-border); table-layout:auto;}
-.note-content th,.note-content td{border:1px solid var(--nc-border); padding:9px 12px; text-align:justify; vertical-align:top;}
+.note-content th,.note-content td{border:1px solid var(--nc-border); padding:9px 12px; text-align:left; vertical-align:top;}
 /* 短内容单元格不换行：列宽随内容自适应，不再被均分列宽硬性换行切断 */
 .note-content .cell-nowrap{white-space:nowrap;}
 /* 表头：深蓝底、冻结在滚动容器顶部（长表格内部滚动时表头常驻） */
@@ -140,4 +140,13 @@
   .note-content pre{ padding:12px 14px; font-size:.85em; }
   .note-content th,.note-content td{ padding:8px 10px; }
   .note-content img{ margin:0.8em auto; }
+  /* 移动端首列限宽：仅限有横向溢出的宽表格（.ts-over），冻结首列不抢占过多横向空间
+   * keep-all：英文单词保持完整按词换行，不被拆成字母 */
+  .note-content .table-scroll.ts-over th:first-child,
+  .note-content .table-scroll.ts-over td:first-child{
+    max-width:34vw;
+    white-space:normal;
+    word-break:keep-all;
+    overflow-wrap:break-word;
+  }
 }
