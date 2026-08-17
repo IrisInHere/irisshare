@@ -3,7 +3,7 @@
  * 流程：发起 device code → 展示 8 位验证码 → 用户在 github.com/login/device 输入 → 轮询拿 token → localStorage 持久化。
  */
 (function(){
-  var CLIENT_ID = 'REPLACE_WITH_GITHUB_CLIENT_ID'; // 用户创建 OAuth App 后填入
+  var CLIENT_ID = 'Ov23livfADPmltV13nYA'; // 用户创建 OAuth App 后填入
   var OWNER='IrisInHere', REPO='irisshare';
   var TOKEN_KEY='irisshare-gh-token', USER_KEY='irisshare-gh-user';
   var api='https://api.github.com';
