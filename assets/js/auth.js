@@ -11,56 +11,74 @@
   function getToken(){ try{ return localStorage.getItem(TOKEN_KEY)||''; }catch(e){ return ''; } }
   function getUser(){ try{ return JSON.parse(localStorage.getItem(USER_KEY)||'null'); }catch(e){ return null; } }
 
-  /* ---------- 登录（Device Flow） ---------- */
+  /* ---------- 登录（Fine-grained PAT 粘贴） ----------
+   * 原因：GitHub Device Flow 端点（github.com/login/device/*）不支持浏览器跨域 CORS，
+   * 纯静态站无法直接用 Device Flow。改用 PAT：用户生成一个 fine-grained token
+   * 粘贴进网页，存 localStorage 保持登录。api.github.com 支持 CORS，编辑功能完全可用。
+   * 安全性：fine-grained token 可限仓库 + 限 Contents 写权限 + 设过期。
+   */
   function startLogin(){
-    if(!CLIENT_ID || CLIENT_ID.indexOf('REPLACE')===0){
-      alert('网站还未配置 GitHub 登录（缺少 Client ID）。请联系站长配置。');
-      return;
-    }
-    return fetch('https://github.com/login/device/code', {
-      method:'POST',
-      headers:{'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded'},
-      body:'client_id='+encodeURIComponent(CLIENT_ID)+'&scope=repo'
-    }).then(function(r){ return r.json(); }).then(function(data){
-      if(data.error) throw new Error(data.error_description||data.error);
-      // 展示验证码 + 授权链接
-      var msg='1. 打开授权页面：'+data.verification_uri+'\n2. 输入验证码：'+data.user_code+'\n3. 点击 Authorize 授权（有效期 '+Math.floor(data.expires_in/60)+' 分钟）';
-      alert(msg);
-      // 轮询拿 token
-      return pollToken(data.device_code, data.interval, data.expires_in);
-    }).then(function(token){
-      localStorage.setItem(TOKEN_KEY, token);
-      return fetchUser(token);
-    }).then(function(user){
-      localStorage.setItem(USER_KEY, JSON.stringify(user));
-      onAuthChange();
-      return user;
-    });
+    showTokenDialog();
   }
 
-  function pollToken(deviceCode, interval, expiresIn){
-    var deadline=Date.now()+(expiresIn||900)*1000;
-    return new Promise(function(resolve, reject){
-      (function tick(){
-        if(Date.now()>deadline){ reject(new Error('验证码已过期，请重新登录')); return; }
-        setTimeout(function(){
-          fetch('https://github.com/login/oauth/access_token', {
-            method:'POST',
-            headers:{'Accept':'application/json','Content-Type':'application/x-www-form-urlencoded'},
-            body:'client_id='+encodeURIComponent(CLIENT_ID)+'&device_code='+encodeURIComponent(deviceCode)+'&grant_type=urn:ietf:params:oauth:grant-type:device_code'
-          }).then(function(r){ return r.json(); }).then(function(data){
-            if(data.access_token){ resolve(data.access_token); return; }
-            if(data.error==='authorization_pending' || data.error==='slow_down'){ tick(); return; }
-            reject(new Error(data.error_description||data.error||'授权失败'));
-          }).catch(function(e){ reject(e); });
-        }, Math.max((interval||5)*1000, 5000));
-      })();
-    });
+  function showTokenDialog(){
+    // 移除已有弹窗
+    var old=document.getElementById('patDialog'); if(old) old.remove();
+    var dlg=document.createElement('div');
+    dlg.id='patDialog';
+    dlg.className='pat-dialog';
+    dlg.innerHTML=
+      '<div class="pat-mask"></div>'+
+      '<div class="pat-box">'+
+        '<div class="pat-head">'+
+          '<h3>使用 GitHub Token 登录</h3>'+
+          '<button type="button" class="pat-x" id="patClose" aria-label="关闭">×</button>'+
+        '</div>'+
+        '<div class="pat-body">'+
+          '<ol class="pat-steps">'+
+            '<li>打开 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub Token 生成页</a>（建议在 Edge/Chrome 打开）</li>'+
+            '<li><b>Token name</b> 填 <code>IrisShare</code>；<b>Expiration</b> 选 1 年（过期前会提示）</li>'+
+            '<li><b>Resource owner</b> 选 <code>IrisInHere</code>；<b>Repository access</b> 选 <b>Only select repositories</b> → 勾选 <code>irisshare</code></li>'+
+            '<li><b>Permissions</b> → <b>Repository permissions</b> → 找到 <b>Contents</b> 改为 <b>Read and write</b></li>'+
+            '<li>点底部 <b>Generate token</b> → 复制 <code>github_pat_xxx...</code> 开头的字符串，粘贴到下面</li>'+
+          '</ol>'+
+          '<div class="pat-input-row">'+
+            '<input type="password" id="patInput" placeholder="github_pat_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" spellcheck="false">'+
+            '<button type="button" class="pat-btn pat-primary" id="patSubmit">登录</button>'+
+          '</div>'+
+          '<p class="pat-tip">Token 仅保存在你浏览器本地（localStorage），不会上传到任何服务器。可随时在 GitHub → Settings → Developer settings 撤销。</p>'+
+        '</div>'+
+      '</div>';
+    document.body.appendChild(dlg);
+    var close=function(){ dlg.remove(); };
+    dlg.querySelector('#patClose').onclick=close;
+    dlg.querySelector('.pat-mask').onclick=close;
+    var input=dlg.querySelector('#patInput');
+    var submit=dlg.querySelector('#patSubmit');
+    input.focus();
+    var doSubmit=function(){
+      var t=input.value.trim();
+      if(!t){ input.focus(); return; }
+      if(!/^(ghp_|github_pat_)/.test(t)){ alert('Token 格式不对，应以 ghp_ 或 github_pat_ 开头'); return; }
+      submit.disabled=true; submit.textContent='验证中…';
+      fetchUser(t).then(function(user){
+        localStorage.setItem(TOKEN_KEY, t);
+        localStorage.setItem(USER_KEY, JSON.stringify(user));
+        canEditCache=null;
+        close();
+        onAuthChange();
+      }).catch(function(err){
+        submit.disabled=false; submit.textContent='登录';
+        alert('Token 验证失败：'+(err.message||'无法获取用户信息')+'\n\n请检查：\n1. Token 复制是否完整（无空格、无换行）\n2. 是否勾选了 Contents 读写权限\n3. 是否选择了 irisshare 仓库');
+      });
+    };
+    submit.onclick=doSubmit;
+    input.addEventListener('keydown', function(e){ if(e.key==='Enter') doSubmit(); });
   }
 
   function fetchUser(token){
     return fetch(api+'/user', { headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'} })
-      .then(function(r){ if(!r.ok) throw new Error('获取用户信息失败'); return r.json(); });
+      .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); });
   }
 
   /* ---------- 登出 ---------- */
