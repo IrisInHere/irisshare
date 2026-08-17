@@ -1,0 +1,43 @@
+# 自动更新笔记清单：当 notes/ 或 ai-finance/ 下有 .md 变更时，
+# 自动重新生成 manifest.json 并提交，GitHub Pages 随即自动重新部署。
+name: Update manifest
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'notes/*.md'
+      - 'ai-finance/*.md'
+  workflow_dispatch: # 允许手动触发测试
+
+permissions:
+  contents: write
+
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Regenerate manifests
+        run: |
+          node tools/gen-manifest.js notes
+          node tools/gen-manifest.js ai-finance
+
+      - name: Commit manifest changes
+        run: |
+          git config user.name "irisshare-bot"
+          git config user.email "irisshare-bot@users.noreply.github.com"
+          git add notes/manifest.json ai-finance/manifest.json
+          if git diff --cached --quiet; then
+            echo "No manifest changes, skip commit"
+          else
+            git commit -m "chore: auto-update manifest [skip ci]"
+            git push
+          fi
