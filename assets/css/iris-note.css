@@ -20,8 +20,8 @@
   line-height:1.8; color:var(--nc-text);
   word-break:break-word; overflow-wrap:anywhere; text-align:justify;
 }
-/* 宽表格在窄屏内横向滚动，不再撑破页面布局 */
-.table-wrap{width:100%; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; margin:1.2em 0;}
+/* 表格滚动容器：横向 + 纵向都滚（长表格内部滚动，配合表头/首列冻结） */
+.table-wrap{width:100%; max-width:100%; overflow:auto; -webkit-overflow-scrolling:touch; margin:1.2em 0; max-height:75vh;}
 [data-theme="dark"] .note-content{
   --nc-stripe:#1f2730;
   --nc-img-shadow:rgba(0,0,0,.4);
@@ -60,12 +60,26 @@
 .note-content pre code{background:transparent; padding:0; color:var(--nc-text); font-size:.9em;}
 .note-content img{max-width:100%; display:block; margin:1em auto; border-radius:8px; box-shadow:0 6px 18px var(--nc-img-shadow);}
 .note-content hr{border:0; border-top:2px solid var(--nc-block); margin:2em 0;}
-.note-content table{border-collapse:collapse; width:100%; margin:1.2em 0; font-size:.95em; border:1px solid var(--nc-border);}
+.note-content table{border-collapse:collapse; width:auto; min-width:100%; margin:1.2em 0; font-size:.95em; border:1px solid var(--nc-border); table-layout:auto;}
 .note-content th,.note-content td{border:1px solid var(--nc-border); padding:9px 12px; text-align:justify; vertical-align:top;}
+/* 短内容单元格不换行：列宽随内容自适应，不再被均分列宽硬性换行切断 */
+.note-content .cell-nowrap{white-space:nowrap;}
+/* 表头：深蓝底、冻结在滚动容器顶部（长表格内部滚动时表头常驻） */
 .note-content thead th{
   background:var(--nc-table-head); color:var(--nc-table-head-text); text-align:center; font-weight:700;
-  position:sticky; top:0; z-index:2;
+  position:sticky; top:0; z-index:5;
 }
+/* 首列冻结：横向滚动时首列常驻左缘；背景与行斑马纹/悬停协调，避免滚动穿透 */
+.note-content th:first-child,.note-content td:first-child{
+  position:sticky; left:0; z-index:3;
+  background:var(--surface,#fff);
+}
+.note-content tbody tr:nth-child(even) td:first-child{background:var(--nc-stripe);}
+.note-content tbody tr:nth-child(even) th:first-child{background:var(--nc-stripe);}
+.note-content tbody tr:hover td:first-child{background:var(--nc-hover);}
+/* 表头 × 首列 交叉角：层级最高、保持深蓝白字，避免滚动时被覆盖 */
+.note-content thead th:first-child{z-index:6; background:var(--nc-table-head); color:var(--nc-table-head-text);}
+/* 斑马纹 / 悬停（首列之外的列） */
 .note-content tbody tr:nth-child(even){background:var(--nc-stripe);}
 .note-content tbody tr:hover{background:var(--nc-hover);}
 .note-content input[type=checkbox]{margin-right:6px;}

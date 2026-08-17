@@ -127,6 +127,10 @@
           w.className='table-wrap';
           t.parentNode.insertBefore(w, t);
           w.appendChild(t);
+          // 智能换行：短内容单元格不换行（列宽随内容自适应），长内容单元格正常换行
+          t.querySelectorAll('th,td').forEach(c=>{
+            if(c.textContent.trim().length<=28) c.classList.add('cell-nowrap');
+          });
         });
 
         box.innerHTML=tmp.innerHTML;
