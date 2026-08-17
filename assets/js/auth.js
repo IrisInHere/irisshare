@@ -101,6 +101,23 @@
   }
 
   /* ---------- 笔记页在线编辑（note.html） ---------- */
+  // 缓存：当前用户对该仓库是否有写权限（null=未知，false=无权限）
+  var canEditCache=null;
+  function checkCanEdit(){
+    var token=getToken();
+    if(!token) return Promise.resolve(false);
+    if(canEditCache!==null) return Promise.resolve(canEditCache);
+    return fetch(api+'/repos/'+OWNER+'/'+REPO, {
+      headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'}
+    }).then(function(r){
+      if(!r.ok) return false;
+      return r.json().then(function(j){
+        canEditCache=!!(j.permissions && j.permissions.push);
+        return canEditCache;
+      });
+    }).catch(function(){ return false; });
+  }
+
   function initEditNote(){
     var editBtn=document.getElementById('editBtn');
     var body=document.getElementById('noteBody');
@@ -134,6 +151,7 @@
         body.parentNode.insertBefore(ed, body);
         body.style.display='none';
         toolbar.style.display='none';
+      checkCanEdit().then(function(can){ if(toolbar) toolbar.style.display=can?'':'none'; });
 
         var ta=ed.querySelector('#neSrc');
         var prev=ed.querySelector('#nePrev');
@@ -164,13 +182,16 @@
       var ed=document.querySelector('.note-editor');
       if(ed) ed.remove();
       body.style.display='';
-      toolbar.style.display=IrisAuth.getUser()?'':'none';
+      checkCanEdit().then(function(can){ if(toolbar) toolbar.style.display=can?'':'none'; });
     }
 
     editBtn.addEventListener('click', enterEdit);
-    // 登录态变化时同步编辑入口
+    // 登录态变化时：异步校验仓库写权限，仅有权者显示编辑入口
     IrisAuth.onLoginChange(function(user){
-      if(toolbar) toolbar.style.display=user?'':'none';
+      if(!user){ canEditCache=null; if(toolbar) toolbar.style.display='none'; return; }
+      checkCanEdit().then(function(can){
+        if(toolbar) toolbar.style.display=can?'':'none';
+      });
     });
   }
 
