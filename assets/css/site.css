@@ -73,6 +73,14 @@ a:hover{text-decoration:underline;}
   display:inline-flex; align-items:center; justify-content:center; transition:.2s;
 }
 .icon-btn:hover{border-color:var(--primary); color:var(--primary);}
+/* GitHub 登录按钮 */
+.auth-btn{
+  height:38px; padding:0 14px; border-radius:10px; border:1px solid var(--border);
+  background:var(--surface); color:var(--text-soft); cursor:pointer; font-size:.9rem;
+  display:inline-flex; align-items:center; gap:6px; transition:.2s; font-family:var(--sans);
+}
+.auth-btn:hover{border-color:var(--primary); color:var(--primary);}
+.auth-btn.logged-in{border-color:var(--primary); color:var(--primary); font-weight:600;}
 
 /* 容器 */
 .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px;}

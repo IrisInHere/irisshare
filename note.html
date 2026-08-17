@@ -10,8 +10,8 @@
 <meta property="og:image" content="https://irisinhere.github.io/irisshare/assets/img/og-cover-v3.png">
 <title>IrisShare · A lifelong learner · 笔记</title>
 <script>try{const t=localStorage.getItem('irisshare-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
-<link rel="stylesheet" href="assets/css/site.css?v=20260817b">
-<link rel="stylesheet" href="assets/css/iris-note.css?v=20260817g">
+<link rel="stylesheet" href="assets/css/site.css?v=20260818a">
+<link rel="stylesheet" href="assets/css/iris-note.css?v=20260818a">
 <link rel="stylesheet" href="assets/js/lib/katex/katex.min.css">
 <link id="hljs-theme" rel="stylesheet" href="assets/css/hljs-light.css">
 </head>
@@ -23,7 +23,10 @@
     <a href="notes.html">阅读笔记</a>
     <a href="ai-finance.html">AI财务</a>
   </nav>
-  <div class="tools"><button class="icon-btn" id="themeToggle" title="切换深色 / 浅色">☾</button></div>
+  <div class="tools">
+    <button class="icon-btn" id="themeToggle" title="切换深色 / 浅色">☾</button>
+    <button class="auth-btn" data-auth-btn title="登录 / 退出 GitHub"><span data-auth-name>登录</span></button>
+  </div>
 </div></header>
 
 <main class="reader">
@@ -47,6 +50,9 @@
   </div>
   <div class="note-col">
     <div class="note-meta" id="noteMeta" style="display:none"></div>
+    <div class="note-toolbar" id="noteToolbar" style="display:none">
+      <button class="edit-btn" id="editBtn" data-edit-btn title="在线编辑这篇笔记（需登录）">✎ 编辑</button>
+    </div>
     <article class="note-content" id="noteBody"><p style="color:var(--text-soft)">加载中…</p></article>
   </div>
 </main>
@@ -60,6 +66,7 @@
 <script src="assets/js/lib/highlight.min.js"></script>
 <script src="assets/js/md-render.js?v=20260817f"></script>
 <script src="assets/js/site.js?v=20260817b"></script>
+<script src="assets/js/auth.js?v=20260818a"></script>
 <script>
   const params=new URLSearchParams(location.search);
   const file=params.get('file');
