@@ -121,7 +121,8 @@
           toc.push({ lv:+h.tagName[1], id:h.id, text:txt });
         });
 
-        // 给每个表格套一个横向滚动容器，避免宽表格在窄屏撑破页面布局（保留表格布局与 sticky 表头）
+        // 给每个表格套一个滚动容器 + 横向交互（箭头按钮/渐隐遮罩），避免宽表格在窄屏撑破页面布局
+        // 注意：必须在 box.innerHTML 赋值后处理真实 DOM（tmp 是序列化源，绑定会失效）
         tmp.querySelectorAll('table').forEach(t=>{
           const w=document.createElement('div');
           w.className='table-wrap';
@@ -134,6 +135,34 @@
         });
 
         box.innerHTML=tmp.innerHTML;
+
+        box.querySelectorAll('table').forEach(t=>{
+          const w=t.parentNode;
+          if(!w.classList.contains('table-wrap')) return;
+          const sc=document.createElement('div');
+          sc.className='table-scroll';
+          w.parentNode.insertBefore(sc, w);
+          sc.appendChild(w);
+          // 横向溢出检测：溢出超过 20px 才显示渐隐遮罩与箭头按钮（避免微小溢出打扰）
+          const over=()=>w.scrollWidth>w.clientWidth+20;
+          const fade=document.createElement('div');
+          fade.className='ts-fade';
+          sc.appendChild(fade);
+          const mkBtn=(cls,txt,aria)=>{
+            const b=document.createElement('button');
+            b.type='button'; b.className='ts-btn '+cls; b.textContent=txt; b.setAttribute('aria-label',aria);
+            b.addEventListener('click',()=>w.scrollBy({left:cls==='ts-prev'?-w.clientWidth*0.8:w.clientWidth*0.8, behavior:'smooth'}));
+            sc.appendChild(b);
+            return b;
+          };
+          mkBtn('ts-prev','‹','向左滚动表格');
+          mkBtn('ts-next','›','向右滚动表格');
+          const sync=()=>sc.classList.toggle('ts-over', over());
+          w.addEventListener('scroll',sync,{passive:true});
+          sync();
+          // 初始渲染后图片/字体加载可能改变宽度，延迟再检测一次
+          setTimeout(sync, 600);
+        });
 
         const metaEl=document.getElementById('noteMeta');
         if(metaEl){

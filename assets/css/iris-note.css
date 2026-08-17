@@ -20,8 +20,10 @@
   line-height:1.8; color:var(--nc-text);
   word-break:break-word; overflow-wrap:anywhere; text-align:justify;
 }
-/* 表格滚动容器：横向 + 纵向都滚（长表格内部滚动，配合表头/首列冻结） */
-.table-wrap{width:100%; max-width:100%; overflow:auto; -webkit-overflow-scrolling:touch; margin:1.2em 0; max-height:75vh;}
+/* 表格滚动容器：横向 + 纵向都滚（长表格内部滚动，配合表头/首列冻结）
+ * 外包一层 .table-scroll（relative），用于放置横向滚动按钮与渐隐遮罩 */
+.table-scroll{position:relative; margin:1.2em 0;}
+.table-wrap{width:100%; max-width:100%; overflow:auto; -webkit-overflow-scrolling:touch; max-height:75vh;}
 [data-theme="dark"] .note-content{
   --nc-stripe:#1f2730;
   --nc-img-shadow:rgba(0,0,0,.4);
@@ -82,6 +84,48 @@
 /* 斑马纹 / 悬停（首列之外的列） */
 .note-content tbody tr:nth-child(even){background:var(--nc-stripe);}
 .note-content tbody tr:hover{background:var(--nc-hover);}
+
+/* ---- 横向滚动体验优化 ----
+ * 1) 滚动条常驻加粗：横向/纵向滚动条更明显，一眼可见可拖动
+ * 2) 首列右侧边界阴影：冻结区与滚动区的分界
+ * 3) 左右箭头按钮：悬停表格时出现，点击横向滚动大半屏
+ * 4) 右侧渐隐遮罩：提示右侧还有内容 */
+.note-content .table-wrap::-webkit-scrollbar{width:12px; height:12px;}
+.note-content .table-wrap::-webkit-scrollbar-track{background:var(--nc-block); border-radius:6px;}
+.note-content .table-wrap::-webkit-scrollbar-thumb{background:var(--nc-border); border-radius:6px; border:2px solid var(--nc-block);}
+.note-content .table-wrap::-webkit-scrollbar-thumb:hover{background:var(--nc-primary);}
+.note-content .table-wrap{scrollbar-width:thin; scrollbar-color:var(--nc-border) var(--nc-block);}
+
+/* 冻结首列右侧边界：明确"冻结区"与"滚动区"的分界 */
+.note-content th:first-child,.note-content td:first-child{box-shadow:3px 0 6px -4px rgba(0,0,0,.22);}
+
+/* 左右箭头按钮：hover 表格容器时显现 */
+.note-content .ts-btn{
+  position:absolute; top:50%; transform:translateY(-50%); z-index:30;
+  width:30px; height:54px; display:flex; align-items:center; justify-content:center;
+  border:0; border-radius:10px; cursor:pointer;
+  background:var(--nc-primary); color:#fff; font-size:18px; line-height:1;
+  opacity:0; transition:opacity .2s; box-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+.note-content .ts-btn:hover{opacity:1 !important;}
+.note-content .ts-btn:disabled{opacity:0 !important; cursor:default; pointer-events:none;}
+.note-content .ts-prev{left:4px;}
+.note-content .ts-next{right:4px;}
+.note-content .table-scroll:hover .ts-btn{opacity:.72;}
+
+/* 右侧渐隐遮罩：提示右侧还有内容；仅在有横向溢出时显示（JS 加 .ts-over） */
+.note-content .table-scroll .ts-fade{
+  position:absolute; top:0; right:0; bottom:0; width:34px; pointer-events:none;
+  background:linear-gradient(to left, var(--surface,#fff), transparent);
+  opacity:0; transition:opacity .2s; z-index:4;
+}
+.note-content .table-scroll.ts-over .ts-fade{opacity:1;}
+
+/* 手机端：触摸可直接滑动，隐藏箭头按钮只留渐隐提示 */
+@media (max-width:860px){
+  .note-content .ts-btn{display:none;}
+  .note-content .table-scroll .ts-fade{width:22px;}
+}
 .note-content input[type=checkbox]{margin-right:6px;}
 .note-content .katex-display{ margin:1.5em 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
 .note-content .katex{ font-size:1.05em; }
