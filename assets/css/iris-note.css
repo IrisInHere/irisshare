@@ -21,7 +21,8 @@
   word-break:break-word; overflow-wrap:anywhere; text-align:justify;
 }
 /* 表格滚动容器：横向 + 纵向都滚（长表格内部滚动，配合表头/首列冻结）
- * 外包一层 .table-scroll（relative），用于放置横向滚动按钮与渐隐遮罩 */
+ * 外包一层 .table-scroll（relative），用于放置横向滚动按钮与渐隐遮罩
+ * 注意：手机端另设为"仅横向滚动、纵向交还页面"，避免双向滚动抢占触摸手势 */
 .table-scroll{position:relative; margin:1.2em 0;}
 .table-wrap{width:100%; max-width:100%; overflow:auto; -webkit-overflow-scrolling:touch; max-height:75vh;}
 [data-theme="dark"] .note-content{
@@ -121,10 +122,17 @@
 }
 .note-content .table-scroll.ts-over .ts-fade{opacity:1;}
 
-/* 手机端：触摸可直接滑动，隐藏箭头按钮只留渐隐提示 */
+/* 手机端：触摸可直接滑动，隐藏箭头按钮只留渐隐提示
+ * 关键：表格容器改"仅横向滚动"——去掉 max-height、overflow-y 隐藏，
+ * 纵向滚动交还给页面。否则容器同时横向+纵向可滚，触摸手势会被纵向抢走，横向滑动失效。 */
 @media (max-width:860px){
   .note-content .ts-btn{display:none;}
   .note-content .table-scroll .ts-fade{width:22px;}
+  .note-content .table-wrap{
+    max-height:none;
+    overflow-x:auto;
+    overflow-y:hidden;
+  }
 }
 .note-content input[type=checkbox]{margin-right:6px;}
 .note-content .katex-display{ margin:1.5em 0; overflow-x:auto; overflow-y:hidden; padding:2px 0; }
